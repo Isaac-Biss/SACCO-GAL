@@ -196,11 +196,8 @@ export default function Dashboard() {
                 <Text variant="body" style={styles.flex} numberOfLines={1}>
                   {isMe ? 'You' : r.member.fullName}
                 </Text>
-                <Text variant="small" color="textSecondary" style={styles.legendPct}>
+                <Text variant="bodyStrong" color={isMe ? 'primary' : 'text'} style={styles.legendPct}>
                   {formatPercent(pct)}
-                </Text>
-                <Text variant="bodyStrong" style={styles.legendAmt}>
-                  {formatMoneyCompact(r.savings)}
                 </Text>
               </View>
             );

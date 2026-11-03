@@ -5,7 +5,7 @@ import { Avatar, Badge, Card, ProgressBar, Screen, Text } from '@/components/ui'
 import { theme } from '@/constants/theme';
 import { useAuth } from '@/auth/AuthContext';
 import { useData } from '@/data/store';
-import { formatMoney, formatMoneyCompact, formatPercent } from '@/lib/money';
+import { formatMoney, formatPercent } from '@/lib/money';
 
 export default function MembersScreen() {
   const { user } = useAuth();
@@ -64,10 +64,10 @@ export default function MembersScreen() {
                   {r.member.role === 'admin' ? <Badge label="Admin" tone="primary" /> : null}
                 </View>
                 <Text variant="small" color="textMuted">
-                  {formatMoneyCompact(r.savings)} saved
+                  of the group fund
                 </Text>
               </View>
-              <Text variant="h3" color="primary">
+              <Text variant="h2" color="primary">
                 {formatPercent(pct)}
               </Text>
             </View>
