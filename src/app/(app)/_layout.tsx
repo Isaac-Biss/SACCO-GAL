@@ -60,8 +60,13 @@ export default function AppLayout() {
           tabBarIcon: ({ color, size }) => <Ionicons name="person-circle" size={size} color={color} />,
         }}
       />
-      {/* Admin tools live under /admin but are reached from Profile, not the tab bar. */}
-      <Tabs.Screen name="admin" options={{ href: null }} />
+      {/* Admin tools live under /admin, reached from Profile. We hide the tab
+          button but keep the route navigable (href:null would make it
+          unreachable and bounce back to the default tab). */}
+      <Tabs.Screen
+        name="admin"
+        options={{ tabBarItemStyle: { display: 'none' }, tabBarButton: () => null }}
+      />
     </Tabs>
   );
 }
