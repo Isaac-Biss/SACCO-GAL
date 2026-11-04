@@ -66,8 +66,10 @@ export function Donut({ slices, size = 180, thickness = 22, children }: DonutPro
           strokeWidth={thickness}
           fill="transparent"
         />
-        {/* Rotate so slices start at 12 o'clock */}
-        <G rotation={-90} origin={`${cx}, ${cy}`}>
+        {/* Rotate so slices start at 12 o'clock.
+            Use the SVG transform string (not the rotation/origin props) so
+            react-native-web doesn't emit an invalid `transform-origin` attr. */}
+        <G transform={`rotate(-90, ${cx}, ${cy})`}>
           {arcs}
         </G>
       </Svg>
