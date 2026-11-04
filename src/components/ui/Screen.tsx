@@ -47,7 +47,8 @@ export function Screen({
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           refreshControl={refreshControl}
-          keyboardShouldPersistTaps="handled">
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="always">
           {inner}
         </ScrollView>
       ) : (

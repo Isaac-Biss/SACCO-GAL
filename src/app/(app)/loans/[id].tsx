@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { GradientCard } from '@/components/GradientCard';
 import { PageHeader } from '@/components/PageHeader';
@@ -59,11 +59,13 @@ export default function LoanDetail() {
   const outstanding = calc ? Math.max(0, calc.totalRepayable - loan.amountRepaid) : 0;
 
   const saveTerms = () => {
+    Keyboard.dismiss();
     if (previewRate <= 0) return Alert.alert('Set an interest rate', 'Enter a monthly interest rate greater than zero.');
     d.setLoanTerms(loan.id, previewRate, previewTerm, user.id);
   };
 
   const submitRepayment = () => {
+    Keyboard.dismiss();
     const amt = parseAmount(repayText);
     if (amt <= 0) return;
     d.recordRepayment(loan.id, amt);
@@ -72,7 +74,8 @@ export default function LoanDetail() {
   };
 
   return (
-    <Screen>
+    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <Screen>
       <PageHeader title="Loan details" subtitle="LOAN" back />
 
       {/* Hero */}
@@ -365,7 +368,8 @@ export default function LoanDetail() {
           />
         </View>
       ) : null}
-    </Screen>
+      </Screen>
+    </KeyboardAvoidingView>
   );
 }
 

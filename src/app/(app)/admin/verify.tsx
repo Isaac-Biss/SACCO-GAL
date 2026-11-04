@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
 import { PageHeader } from '@/components/PageHeader';
 import { Avatar, Button, Card, EmptyState, Input, Screen, Text } from '@/components/ui';
@@ -20,26 +20,28 @@ export default function VerifyDeposits() {
   const pending = d.pendingContributions();
 
   return (
-    <Screen>
-      <PageHeader title="Verify deposits" subtitle="ADMIN" back />
-      {pending.length === 0 ? (
-        <EmptyState
-          icon="checkmark-done-outline"
-          title="All caught up"
-          message="There are no deposits waiting to be verified. New submissions will appear here."
-        />
-      ) : (
-        <>
-          <Text variant="small" color="textSecondary" style={styles.intro}>
-            Confirm the money reached the group account, then approve the amount (edit it if it
-            differs from the receipt) or reject the submission.
-          </Text>
-          {pending.map((c) => (
-            <VerifyItem key={c.id} contribution={c} verifierId={user.id} />
-          ))}
-        </>
-      )}
-    </Screen>
+    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <Screen>
+        <PageHeader title="Verify deposits" subtitle="ADMIN" back />
+        {pending.length === 0 ? (
+          <EmptyState
+            icon="checkmark-done-outline"
+            title="All caught up"
+            message="There are no deposits waiting to be verified. New submissions will appear here."
+          />
+        ) : (
+          <>
+            <Text variant="small" color="textSecondary" style={styles.intro}>
+              Confirm the money reached the group account, then approve the amount (edit it if it
+              differs from the receipt) or reject the submission.
+            </Text>
+            {pending.map((c) => (
+              <VerifyItem key={c.id} contribution={c} verifierId={user.id} />
+            ))}
+          </>
+        )}
+      </Screen>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -105,7 +107,10 @@ function VerifyItem({ contribution: c, verifierId }: { contribution: Contributio
               title="Confirm reject"
               variant="danger"
               style={styles.flex}
-              onPress={() => d.rejectContribution(c.id, reason.trim() || 'Not verified', verifierId)}
+              onPress={() => {
+                Keyboard.dismiss();
+                d.rejectContribution(c.id, reason.trim() || 'Not verified', verifierId);
+              }}
             />
           </View>
         </View>
@@ -129,7 +134,10 @@ function VerifyItem({ contribution: c, verifierId }: { contribution: Contributio
               title={edited ? 'Approve edited' : 'Approve'}
               icon="checkmark"
               style={styles.flex}
-              onPress={() => d.verifyContribution(c.id, amount, verifierId)}
+              onPress={() => {
+                Keyboard.dismiss();
+                d.verifyContribution(c.id, amount, verifierId);
+              }}
             />
           </View>
         </>
